@@ -336,7 +336,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   border: OutlineInputBorder(),
                   labelText: 'الجنس',
                 ),
-                value: _selectedGender,
+                initialValue: _selectedGender,
                 items: _genders
                     .map((gender) => DropdownMenuItem(
                           value: gender,
@@ -357,7 +357,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   border: OutlineInputBorder(),
                   labelText: 'نوع الحساب',
                 ),
-                value: _selectedAccountType,
+                initialValue: _selectedAccountType,
                 items: _accountTypes
                     .map((type) => DropdownMenuItem(
                           value: type,
@@ -378,7 +378,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   border: OutlineInputBorder(),
                   labelText: 'البلد',
                 ),
-                value: _selectedCountry,
+                initialValue: _selectedCountry,
                 items: _countries
                     .map((country) => DropdownMenuItem(
                           value: country,

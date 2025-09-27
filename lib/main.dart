@@ -1,130 +1,90 @@
 import 'package:flutter/material.dart';
-import 'pages.dart';
 
+/*
+  قائمة المهام المستقبلية للتطبيق:
+  1- إضافة app bar وفي الجهة اليمنى قائمة (Drawer) تحتوي على: (الإعدادات، الحساب، قائمة القراءة لاحقًا).
+  2- إضافة أيقونة في الجهة اليسرى للتصفية (Filter).
+  3- إضافة ميزة التحديث التلقائي عند الحفظ (Hot Reload).
+  4- إضافة الوضع المظلم (Dark Mode).
+  5- ربط التطبيق مع API.
+  6- إضافة تشفير للبيانات.
+  7- تعريف كل زر باسم مخصص للوصولية (Accessibility).
+  8- إضافة أزرار التفاعل (مثل الإعجاب والمشاركة).
+  9- إضافة زر لعرض حسابات المشروع أو المستخدم.
+  10- إضافة التنقل بين الصفحات (Navigation).
+*/
+
+// نقطة بداية تشغيل التطبيق
 void main() {
+  //  runApp تستدعي الويدجت الجذر للتطبيق وهو MyApp
   runApp(const MyApp());
 }
 
+// الويدجت الرئيسي للتطبيق (StatelessWidget)
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // MaterialApp هو الويدجت الأساسي الذي يوفر ميزات التصميم الماتيريال
     return MaterialApp(
+      // لإزالة شريط "Debug" الذي يظهر في الزاوية
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 0;
-
-  final List<Widget> pages = [
-    const Center(child: Text("الصفحة الرئيسية")),
-    const Center(child: Text("الصفحة الثانية")),
-    const Center(child: Text("الصفحة الثالثة")),
-  ];
-
-  void _onMenuItemSelected(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'عوالمنا',
-              style: TextStyle(color: Colors.white, fontSize: 24),
+      // home يحدد الواجهة الرئيسية التي ستظهر عند تشغيل التطبيق
+      home: Scaffold(
+        // AppBar هو الشريط العلوي في التطبيق
+        appBar: AppBar(
+          // لون خلفية الشريط العلوي
+          backgroundColor: Colors.black,
+          // عنوان التطبيق الذي يظهر في الشريط العلوي
+          title: const Text(
+            "عوالمنا",
+            // تحديد نمط الخط ليكون باللون الأبيض ليسهل قراءته
+            style: TextStyle(color: Colors.white),
+          ),
+          // لجعل العنوان في منتصف الشريط
+          centerTitle: true,
+          // الأيقونات التي تظهر في الجهة اليمنى من الشريط
+          actions: [
+            // IconButton لإنشاء زر يحتوي على أيقونة
+            IconButton(
+              onPressed: () {
+                // هنا تضع الكود الذي يتم تنفيذه عند الضغط على أيقونة البحث
+              },
+              icon: const Icon(Icons.search, color: Colors.white),
             ),
             IconButton(
-              icon: const Icon(Icons.add_alert),
-              tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'This is a snackbar',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                  ),
-                );
+                // كود الضغط على أيقونة الإعدادات
               },
+              icon: const Icon(Icons.settings, color: Colors.white),
             ),
-            // فئات القصص
-
-            const SizedBox(width: 10),
-            Image.asset(
-              'images/logo.png',
-              fit: BoxFit.contain,
-              height: 32,
+            IconButton(
+              onPressed: () {
+                // كود الضغط على أيقونة الحساب
+              },
+              icon: const Icon(Icons.account_circle, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // كود الضغط على أيقونة القائمة
+              },
+              icon: const Icon(Icons.menu, color: Colors.white),
             ),
           ],
         ),
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        titleSpacing: 0.0,
-        toolbarOpacity: 0.6,
-        actions: [
-          PopupMenuButton<int>(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onSelected: _onMenuItemSelected,
-            itemBuilder: (context) => [
-              PopupMenuItem<int>(
-                value: 0,
-                key: const Key("account"),
-                child: Row(
-                  children: const [
-                    Icon(Icons.account_circle_outlined, key: Key("icon")),
-                    SizedBox(width: 8),
-                    Text("الحساب"),
-                  ],
-                ),
-              ),
-              PopupMenuItem<int>(
-                value: 1,
-                key: const Key("settings"),
-                child: Row(
-                  children: const [
-                    Icon(Icons.account_circle_outlined, key: Key("icon")),
-                    SizedBox(width: 8),
-                    Text("الاعدادات"),
-                  ],
-                ),
-              ),
-              const PopupMenuItem<int>(
-                value: 2,
-                key: Key("add_story"),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      key: Key("writing"),
-                    ),
-                    SizedBox(width: 8),
-                    Text("اضافة قصة"),
-                  ],
-                ),
-              ),
-            ],
+        // body هو المحتوى الرئيسي للصفحة
+        body: const SafeArea(
+          // SafeArea تضمن عدم تداخل المحتوى مع حواف الشاشة وأشرطة النظام
+          child: Center(
+            // Center لوضع المحتوى في منتصف الشاشة
+            child: Text(
+              'محتوى الصفحة هنا',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
-        ],
+        ),
       ),
-      body: pages[currentIndex],
     );
   }
 }
