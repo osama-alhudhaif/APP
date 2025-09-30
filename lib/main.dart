@@ -77,11 +77,7 @@ class MyApp extends StatelessWidget {
         body: const SafeArea(
           // SafeArea تضمن عدم تداخل المحتوى مع حواف الشاشة وأشرطة النظام
           child: Center(
-            // Center لوضع المحتوى في منتصف الشاشة
-            child: Text(
-              'محتوى الصفحة هنا',
-              style: TextStyle(fontSize: 20),
-            ),
+            
           ),
         ),
       ),

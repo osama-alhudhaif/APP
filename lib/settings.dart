@@ -30,7 +30,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   bool _twoFactorEnabled = false;
   bool _isEducationalCenter = false;
 
-  get value => null;
+  Null get value => null;
 
   void _showEditNameDialog() {
     String newName = _name;
