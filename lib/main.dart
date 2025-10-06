@@ -122,50 +122,51 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// الفئة
-var categories = [
+// الفئات
+final List<String> categories = [
   'الكل',
-  'كوميديا'
-      'خيال علمي'
-      'خيال'
-      'الرومانسي'
-      'جريمة وتحقيق'
-      'الرعب'
-      'مغامرة'
-      'دراما'
-      'تاريخي'
-      'سرقة'
-      'حرب'
-      'فانتازي'
-      'اطفال'
+  'كوميديا',
+  'خيال علمي',
+  'خيال',
+  'رومانسي',
+  'جريمة وتحقيق',
+  'رعب',
+  'مغامرة',
+  'دراما',
+  'تاريخي',
+  'سرقة',
+  'حرب',
+  'فانتازي',
+  'أطفال',
 ];
 
 class _HomePageState extends State<HomePage> {
-  String _selectedFilter = categories as String;
-  final List<String> _filterOptions = [categories as String];
+  String _selectedFilter = 'الكل';
 
   void _showFilterDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('تصفية القصص'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _filterOptions.map((filter) {
-            return RadioListTile<String>(
-              title: Text(filter),
-              value: filter,
-              // ignore: deprecated_member_use
-              groupValue: _selectedFilter,
-              // ignore: deprecated_member_use
-              onChanged: (value) {
-                setState(() {
-                  _selectedFilter = value!;
-                });
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: categories.map((filter) {
+              return RadioListTile<String>(
+                title: Text(filter),
+                value: filter,
+                // ignore: deprecated_member_use
+                groupValue: _selectedFilter,
+                // ignore: deprecated_member_use
+                onChanged: (value) {
+                  setState(() {
+                    _selectedFilter = value!;
+                  });
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
