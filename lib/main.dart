@@ -354,6 +354,7 @@ class StoryList extends StatelessWidget {
   const StoryList({super.key, this.filterCategory});
 
   static const List<Map<String, dynamic>> stories = [
+    // القصة الأولى
     {
       'title': 'رحلة بين العوالم',
       'author': 'أسامة الحضيف',
@@ -363,6 +364,7 @@ class StoryList extends StatelessWidget {
       'likes': 245,
       'views': 1520,
     },
+    // القصة الثانية
     {
       'title': 'المدينة المفقودة',
       'author': 'حسام الحضيف',
@@ -372,6 +374,7 @@ class StoryList extends StatelessWidget {
       'likes': 189,
       'views': 980,
     },
+    // القصة الثالثة
     {
       'title': 'الظل الأخير',
       'author': 'محمد الحضيف',
@@ -381,6 +384,7 @@ class StoryList extends StatelessWidget {
       'likes': 312,
       'views': 2100,
     },
+    // القصة الرابعة
     {
       'title': 'أسرار الغابة',
       'author': 'صلاح الحضيف',
