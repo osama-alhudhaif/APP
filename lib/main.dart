@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:awallimna/features/settings/screens/settings_screen.dart';
+import 'package:awallimna/features/profile/screens/my_profile_screen.dart';
 /*
   قائمة المهام المستقبلية للتطبيق:
   ✓ 1- إضافة app bar مع Drawer في الجهة اليمنى
@@ -236,8 +237,11 @@ class _HomePageState extends State<HomePage> {
               title: const Text('الحساب'),
               onTap: () {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('قريباً: صفحة الحساب')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyProfileScreen(),
+                  ),
                 );
               },
             ),
@@ -261,10 +265,14 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('الإعدادات'),
+              // تصفح الإعدادات
               onTap: () {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('قريباً: الإعدادات')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(), // أزل const من هنا
+                  ),
                 );
               },
             ),

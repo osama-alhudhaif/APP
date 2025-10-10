@@ -1,3 +1,15 @@
+// بيانات الجداول في قاعدة البيانات
+
+// الاتصال بقاعدة البيانات
+// قاعدة البيانات المستخدمة هي MySQL
+class DB_CONNECTION {
+  static const String host = 'localhost';
+  static const String port = 'port';
+  static const String database = 'database';
+  static const String username = 'username';
+  static const String password = 'password';
+}
+
 // حسابات المستخدم
 class USER_ACCOUNTS {
   static const String author = "author";
