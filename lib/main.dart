@@ -402,6 +402,15 @@ class StoryList extends StatelessWidget {
       'likes': 156,
       'views': 670,
     },
+    // القصة الخامسة
+    {
+      'title': 'البطيخه المضحكة',
+      'author': 'محمد الحضيف',
+      'description': 'قصة خيالية تدور حول شخصية تحاول الهروب من ماضيها المظلم.',
+      'categories': ['خيال', 'رومانسي', 'دراما'],
+      'likes': 245,
+      'views': 1520,
+    }
   ];
 
   @override
