@@ -1,8 +1,8 @@
-name: عوالمينا
+name: awallimna
 description: "منصة القصص والروايات متعددة اللغات المدعومة بالذكاء الاصطناعي."
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -49,3 +49,4 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/icon/app_icon.png"
+

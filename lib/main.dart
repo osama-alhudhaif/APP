@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text('Hello World'),
-      ),
-    ),
-  ));
+  runApp(Awallimna());
+}
+
+// ignore: use_key_in_widget_constructors
+class Awallimna extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp();
+  }
 }
