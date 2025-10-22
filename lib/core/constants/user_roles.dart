@@ -1,5 +1,3 @@
-// lib/constants/user_roles.dart
-
 class UserAccounts {
   static const String author = "author";
   static const String adminAuthor = "admin_author";

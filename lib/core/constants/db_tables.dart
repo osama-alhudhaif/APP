@@ -4,10 +4,10 @@
 // قاعدة البيانات المستخدمة هي MySQL
 class DB_CONNECTION {
   static const String host = 'localhost';
-  static const String port = 'port';
-  static const String database = 'database';
-  static const String username = 'username';
-  static const String password = 'password';
+  static const String port = '3306';
+  static const String database = 'awalimna_data';
+  static const String username = 'OSamh64';
+  static const String password = 'OSamhmhmd2@';
 }
 
 // حسابات المستخدم
@@ -17,6 +17,7 @@ class USER_ACCOUNTS {
   static const String admin_author = "admin_author";
   // ignore: constant_identifier_names
   static const String super_admin_author = "super_admin_author";
+  // ignore: constant_identifier_names
   static const String reader = "reader";
   // ignore: constant_identifier_names
   static const String admin_reader = "admin_reader";

@@ -1,5 +1,3 @@
-// lib/constants/categories.dart
-
 class Categories {
   static const String comedy = "كوميديا";
   static const String scienceFiction = "خيال علمي";
