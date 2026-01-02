@@ -11,11 +11,11 @@ class Awallimna extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('عوالمنا'),
+          title: Text('قلم'),
           // iconx
         ),
         body: Center(
-          child: Text('مرحبا بكم في عوالمنا'),
+          child: Text('مرحبا بكم في قلم'),
         ),
       ),
     );
