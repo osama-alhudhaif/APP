@@ -1,4 +1,4 @@
-package com.example.awallimna
+package com.oda.app
 
 import io.flutter.embedding.android.FlutterActivity
 
