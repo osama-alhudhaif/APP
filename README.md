@@ -1,18 +1,64 @@
-# awallimna
+﻿# أودا — Oda 📖✨
 
-A new Flutter project.
+> منصة متكاملة للترجمة الأدبية والفنية، تجمع بين الذكاء الاصطناعي والعمق الثقافي للحفاظ على روح النص الأصلي.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🧐 عن المشروع
 
-A few resources to get you started if this is your first Flutter project:
+**أودا (Oda)** منصة ترجمة أدبية مدعومة بالذكاء الاصطناعي، مصممة لتجاوز حدود الترجمة الآلية التقليدية. تحافظ المنصة على السياق الأدبي والأسلوب الفني والعمق الثقافي لكل نص، وتتيح للقارئ العربي الوصول إلى الأدب العالمي بجودة تليق به.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# app
-# APP
+## ✨ المميزات
+
+- ترجمة أدبية تحافظ على الأسلوب والسياق الثقافي
+- دعم واسع للغات العالمية
+- واجهة قراءة سلسة ومريحة
+- نظام تصنيف أدبي متعدد الأنواع
+- متوفر على Android وiOS وWeb
+
+---
+
+## 💻 التقنيات المستخدمة
+
+| القسم | التقنية |
+|---|---|
+| تطبيق الجوال | Flutter / Dart |
+| الخلفية | Django REST Framework |
+| قاعدة البيانات | PostgreSQL |
+| الذكاء الاصطناعي | Large Language Models |
+
+---
+
+## ⚙️ تشغيل المشروع
+```bash
+# تثبيت المتطلبات
+flutter pub get
+
+# تشغيل التطبيق
+flutter run
+```
+
+> تأكد من تهيئة ملف `.env` بالإعدادات المطلوبة قبل التشغيل.
+
+---
+
+## 🔗 مستودعات المشروع
+
+- **الموقع والخلفية:** [github.com/osama-alhudhaif/website](https://github.com/osama-alhudhaif/website)
+- **تطبيق الجوال:** [github.com/osama-alhudhaif/APP](https://github.com/osama-alhudhaif/APP)
+
+---
+
+## 👨‍💻 المطور
+
+**أسامة الحضيف**
+- GitHub: [@osama-alhudhaif](https://github.com/osama-alhudhaif)
+- Email: osama.alhudhaif@gmail.com
+
+---
+
+## 📄 الترخيص
+
+جميع الحقوق محفوظة © 2025 أودا
