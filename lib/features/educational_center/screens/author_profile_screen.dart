@@ -2,26 +2,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../data/models/user_model.dart';
+import '../../../data/models/author_model.dart';
 import '../../../data/services/api_service.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../authentication/providers/auth_provider.dart';
-import '../../educational_center/providers/story_provider.dart';
-import '../../educational_center/widgets/story_card.dart';
+import '../providers/story_provider.dart';
+import '../widgets/story_card.dart';
 
-class OtherAccountScreen extends StatefulWidget {
-  final int userId;
+class AuthorProfileScreen extends StatefulWidget {
+  final int authorId;
 
-  const OtherAccountScreen({super.key, required this.userId});
+  const AuthorProfileScreen({super.key, required this.authorId});
 
   @override
-  State<OtherAccountScreen> createState() => _OtherAccountScreenState();
+  State<AuthorProfileScreen> createState() => _AuthorProfileScreenState();
 }
 
-class _OtherAccountScreenState extends State<OtherAccountScreen> {
-  User? _profile;
+class _AuthorProfileScreenState extends State<AuthorProfileScreen> {
+  Author? _author;
   bool _isLoading = true;
-  bool _isFollowing = false;
   String? _error;
   final _api = ApiService();
 
@@ -36,15 +35,17 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
       _isLoading = true;
       _error = null;
     });
+
     try {
       final response = await _api.get(
-        ApiEndpoints.userProfile(widget.userId),
+        ApiEndpoints.userProfile(widget.authorId),
         requiresAuth: true,
       );
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         setState(() {
-          _profile = User.fromJson(data);
+          _author = Author.fromJson(data);
           _isLoading = false;
         });
       } else {
@@ -62,20 +63,19 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
   }
 
   Future<void> _toggleFollow() async {
+    if (_author == null) return;
     final response = await _api.post(
-      ApiEndpoints.followUser(widget.userId),
+      ApiEndpoints.followUser(widget.authorId),
       requiresAuth: true,
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
-        _isFollowing = !_isFollowing;
-        if (_profile != null) {
-          _profile = _profile!.copyWith(
-            followersCount: _isFollowing
-                ? _profile!.followersCount + 1
-                : _profile!.followersCount - 1,
-          );
-        }
+        _author = _author!.copyWith(
+          isFollowing: !_author!.isFollowing,
+          followersCount: _author!.isFollowing
+              ? _author!.followersCount - 1
+              : _author!.followersCount + 1,
+        );
       });
     }
   }
@@ -85,23 +85,44 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
     final auth = context.watch<AuthProvider>();
     final theme = Theme.of(context);
 
+    if (!auth.isAuthenticated) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('ملف الكاتب')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.lock_outline, size: 64),
+              const SizedBox(height: 16),
+              const Text('تسجيل الدخول مطلوب'),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => context.push('/login'),
+                child: const Text('تسجيل الدخول'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('الملف الشخصي')),
+        appBar: AppBar(title: const Text('ملف الكاتب')),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
-    if (_error != null || _profile == null) {
+    if (_error != null || _author == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('الملف الشخصي')),
+        appBar: AppBar(title: const Text('ملف الكاتب')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.error_outline, size: 48),
               const SizedBox(height: 16),
-              Text(_error ?? 'لم يتم العثور على الملف الشخصي'),
+              Text(_error ?? 'لم يتم العثور على الكاتب'),
               const SizedBox(height: 16),
               FilledButton.icon(
                 onPressed: _fetchProfile,
@@ -115,7 +136,7 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_profile!.username)),
+      appBar: AppBar(title: Text(_author!.username)),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -127,45 +148,43 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor: theme.colorScheme.primaryContainer,
-                    child: Text(
-                      _profile!.username[0].toUpperCase(),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                          color: theme.colorScheme.onPrimaryContainer),
-                    ),
+                    backgroundImage: _author!.profileImage != null
+                        ? NetworkImage(_author!.profileImage!)
+                        : null,
+                    child: _author!.profileImage == null
+                        ? Text(_author!.username[0].toUpperCase(),
+                            style: theme.textTheme.headlineMedium)
+                        : null,
                   ),
                   const SizedBox(height: 16),
-                  Text(_profile!.username,
+                  Text(_author!.username,
                       style: theme.textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold)),
-                  if (_profile!.fullName.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(_profile!.fullName,
+                  if (_author!.bio != null) ...[
+                    const SizedBox(height: 8),
+                    Text(_author!.bio!,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant)),
+                            color: theme.colorScheme.onSurfaceVariant),
+                        textAlign: TextAlign.center),
                   ],
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _stat(context, '${_profile!.followersCount}', 'المتابعون'),
-                      Container(
-                          width: 1, height: 40,
-                          margin: const EdgeInsets.symmetric(horizontal: 24),
+                      _stat(context, '${_author!.followersCount}', 'المتابعون'),
+                      Container(width: 1, height: 40, margin: const EdgeInsets.symmetric(horizontal: 24),
                           color: theme.colorScheme.outlineVariant),
-                      _stat(context, '${_profile!.followingCount}', 'يتابع'),
+                      _stat(context, '${_author!.storiesCount}', 'القصص'),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  if (auth.isLoggedIn &&
-                      auth.user?.id != widget.userId)
-                    FilledButton.icon(
-                      onPressed: _toggleFollow,
-                      icon: Icon(_isFollowing
-                          ? Icons.person_remove_outlined
-                          : Icons.person_add_outlined),
-                      label: Text(_isFollowing ? 'إلغاء المتابعة' : 'متابعة'),
-                    ),
+                  FilledButton.icon(
+                    onPressed: _toggleFollow,
+                    icon: Icon(_author!.isFollowing
+                        ? Icons.person_remove_outlined
+                        : Icons.person_add_outlined),
+                    label: Text(_author!.isFollowing ? 'إلغاء المتابعة' : 'متابعة'),
+                  ),
                 ],
               ),
             ),
@@ -174,15 +193,15 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('القصص',
+                  Text('قصص الكاتب',
                       style: theme.textTheme.titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 16),
                   Consumer<StoryProvider>(
-                    builder: (ctx, sp, _) {
-                      final userStories =
-                          sp.stories.where((s) => s.author == widget.userId).toList();
-                      if (userStories.isEmpty) {
+                    builder: (context, sp, _) {
+                      final authorStories =
+                          sp.stories.where((s) => s.author == widget.authorId).toList();
+                      if (authorStories.isEmpty) {
                         return Center(
                           child: Column(
                             children: [
@@ -197,8 +216,8 @@ class _OtherAccountScreenState extends State<OtherAccountScreen> {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: userStories.length,
-                        itemBuilder: (_, i) => StoryCard(story: userStories[i]),
+                        itemCount: authorStories.length,
+                        itemBuilder: (_, i) => StoryCard(story: authorStories[i]),
                       );
                     },
                   ),
