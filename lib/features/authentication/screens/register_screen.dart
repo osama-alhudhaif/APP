@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../../../core/providers/language_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -37,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
     final auth = context.read<AuthProvider>();
+    final s = context.read<LanguageProvider>().strings;
     final ok = await auth.register({
       'username': _usernameCtrl.text.trim(),
       'email': _emailCtrl.text.trim(),
@@ -54,7 +56,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context.go('/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم إنشاء الحساب، يرجى تسجيل الدخول')));
+          SnackBar(content: Text(s.isArabic
+              ? 'تم إنشاء الحساب، يرجى تسجيل الدخول'
+              : 'Account created, please log in')));
         context.go('/login');
       }
     }
@@ -64,9 +68,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final theme = Theme.of(context);
+    final s = context.watch<LanguageProvider>().strings;
+    final required = s.isArabic ? 'مطلوب' : 'Required';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('إنشاء حساب')),
+      appBar: AppBar(title: Text(s.registerTitle)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -89,22 +95,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
                 TextFormField(
                   controller: _usernameCtrl,
-                  decoration: const InputDecoration(
-                      labelText: 'اسم المستخدم *',
-                      prefixIcon: Icon(Icons.person_outline)),
+                  decoration: InputDecoration(
+                      labelText: '${s.username} *',
+                      prefixIcon: const Icon(Icons.person_outline)),
                   validator: (v) => (v == null || v.length < 3)
-                      ? 'اسم المستخدم 3 أحرف على الأقل'
+                      ? (s.isArabic ? 'اسم المستخدم 3 أحرف على الأقل' : 'Username must be at least 3 characters')
                       : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailCtrl,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                      labelText: 'البريد الإلكتروني *',
-                      prefixIcon: Icon(Icons.email_outlined)),
+                  decoration: InputDecoration(
+                      labelText: '${s.email} *',
+                      prefixIcon: const Icon(Icons.email_outlined)),
                   validator: (v) =>
-                      (v == null || !v.contains('@')) ? 'بريد إلكتروني غير صحيح' : null,
+                      (v == null || !v.contains('@'))
+                          ? (s.isArabic ? 'بريد إلكتروني غير صحيح' : 'Invalid email')
+                          : null,
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -112,20 +120,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Expanded(
                       child: TextFormField(
                         controller: _firstNameCtrl,
-                        decoration:
-                            const InputDecoration(labelText: 'الاسم الأول *'),
+                        decoration: InputDecoration(
+                            labelText: s.isArabic ? 'الاسم الأول *' : 'First Name *'),
                         validator: (v) =>
-                            (v == null || v.isEmpty) ? 'مطلوب' : null,
+                            (v == null || v.isEmpty) ? required : null,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: TextFormField(
                         controller: _lastNameCtrl,
-                        decoration:
-                            const InputDecoration(labelText: 'الاسم الأخير *'),
+                        decoration: InputDecoration(
+                            labelText: s.isArabic ? 'الاسم الأخير *' : 'Last Name *'),
                         validator: (v) =>
-                            (v == null || v.isEmpty) ? 'مطلوب' : null,
+                            (v == null || v.isEmpty) ? required : null,
                       ),
                     ),
                   ],
@@ -133,21 +141,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   initialValue: _gender,
-                  decoration: const InputDecoration(labelText: 'الجنس'),
-                  items: const [
-                    DropdownMenuItem(value: 'male', child: Text('ذكر')),
-                    DropdownMenuItem(value: 'female', child: Text('أنثى')),
+                  decoration: InputDecoration(labelText: s.isArabic ? 'الجنس' : 'Gender'),
+                  items: [
+                    DropdownMenuItem(value: 'male', child: Text(s.isArabic ? 'ذكر' : 'Male')),
+                    DropdownMenuItem(value: 'female', child: Text(s.isArabic ? 'أنثى' : 'Female')),
                   ],
                   onChanged: (v) => setState(() => _gender = v!),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   initialValue: _role,
-                  decoration: const InputDecoration(labelText: 'الدور'),
-                  items: const [
-                    DropdownMenuItem(value: 'reader', child: Text('قارئ')),
-                    DropdownMenuItem(value: 'writer', child: Text('كاتب')),
-                    DropdownMenuItem(value: 'both', child: Text('قارئ وكاتب')),
+                  decoration: InputDecoration(labelText: s.isArabic ? 'الدور' : 'Role'),
+                  items: [
+                    DropdownMenuItem(value: 'reader', child: Text(s.isArabic ? 'قارئ' : 'Reader')),
+                    DropdownMenuItem(value: 'writer', child: Text(s.isArabic ? 'كاتب' : 'Writer')),
+                    DropdownMenuItem(value: 'both', child: Text(s.isArabic ? 'قارئ وكاتب' : 'Reader & Writer')),
                   ],
                   onChanged: (v) => setState(() => _role = v!),
                 ),
@@ -156,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _passwordCtrl,
                   obscureText: _obscure,
                   decoration: InputDecoration(
-                    labelText: 'كلمة المرور *',
+                    labelText: '${s.password} *',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_obscure
@@ -165,15 +173,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () => setState(() => _obscure = !_obscure),
                     ),
                   ),
-                  validator: (v) =>
-                      (v == null || v.length < 6) ? 'كلمة المرور 6 أحرف على الأقل' : null,
+                  validator: (v) => (v == null || v.length < 6)
+                      ? (s.isArabic ? 'كلمة المرور 6 أحرف على الأقل' : 'Password must be at least 6 characters')
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _confirmCtrl,
                   obscureText: _obscureConfirm,
                   decoration: InputDecoration(
-                    labelText: 'تأكيد كلمة المرور *',
+                    labelText: '${s.confirmPassword} *',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(_obscureConfirm
@@ -184,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   validator: (v) => v != _passwordCtrl.text
-                      ? 'كلمتا المرور غير متطابقتين'
+                      ? s.passwordsNotMatch
                       : null,
                 ),
                 const SizedBox(height: 24),
@@ -196,12 +205,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 20, width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2,
                               color: Colors.white))
-                      : const Text('إنشاء حساب'),
+                      : Text(s.register),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () => context.go('/login'),
-                  child: const Text('لديك حساب؟ سجّل الدخول'),
+                  child: Text(s.haveAccount),
                 ),
               ],
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/routing/app_router.dart';
+import 'core/providers/language_provider.dart';
 import 'features/authentication/providers/auth_provider.dart';
 import 'features/educational_center/providers/story_provider.dart';
 
@@ -25,26 +26,51 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: authProvider),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => StoryProvider()),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp.router(
-            title: 'أودا',
-            debugShowCheckedModeBanner: false,
-            routerConfig: AppRouter.router(authProvider),
-            themeMode: themeProvider.themeMode,
-            theme: themeProvider.lightTheme,
-            darkTheme: themeProvider.darkTheme,
-            locale: const Locale('ar'),
-            supportedLocales: const [Locale('ar'), Locale('en')],
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-          );
-        },
-      ),
+      child: _AppRoot(authProvider: authProvider),
+    );
+  }
+}
+
+class _AppRoot extends StatefulWidget {
+  final AuthProvider authProvider;
+  const _AppRoot({required this.authProvider});
+
+  @override
+  State<_AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<_AppRoot> {
+  @override
+  void initState() {
+    super.initState();
+    // اكتشاف لغة الجهاز عند أول تشغيل، ثم احترام تفضيل المستخدم المحفوظ
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+      context.read<LanguageProvider>().init(deviceLocale);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final languageProvider = context.watch<LanguageProvider>();
+
+    return MaterialApp.router(
+      title: 'أودا',
+      debugShowCheckedModeBanner: false,
+      routerConfig: AppRouter.router(widget.authProvider),
+      themeMode: themeProvider.themeMode,
+      theme: themeProvider.lightTheme,
+      darkTheme: themeProvider.darkTheme,
+      locale: languageProvider.locale,
+      supportedLocales: const [Locale('ar'), Locale('en')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
     );
   }
 }

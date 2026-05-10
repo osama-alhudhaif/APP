@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../../../core/providers/language_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final theme = Theme.of(context);
+    final s = context.watch<LanguageProvider>().strings;
 
     return Scaffold(
       body: SafeArea(
@@ -49,11 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Icon(Icons.auto_stories_rounded, size: 80,
                       color: theme.colorScheme.primary),
                   const SizedBox(height: 24),
-                  Text('أودا', style: theme.textTheme.headlineLarge?.copyWith(
+                  Text(s.appName, style: theme.textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
                     textAlign: TextAlign.center),
                   const SizedBox(height: 8),
-                  Text('سجّل الدخول للمتابعة',
+                  Text(s.loginSubtitle,
                       style: theme.textTheme.bodyLarge?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant),
                       textAlign: TextAlign.center),
@@ -73,18 +75,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                   TextFormField(
                     controller: _usernameCtrl,
-                    decoration: const InputDecoration(
-                        labelText: 'اسم المستخدم',
-                        prefixIcon: Icon(Icons.person_outline)),
+                    decoration: InputDecoration(
+                        labelText: s.username,
+                        prefixIcon: const Icon(Icons.person_outline)),
                     validator: (v) =>
-                        v == null || v.isEmpty ? 'يرجى إدخال اسم المستخدم' : null,
+                        v == null || v.isEmpty ? s.usernameRequired : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordCtrl,
                     obscureText: _obscure,
                     decoration: InputDecoration(
-                      labelText: 'كلمة المرور',
+                      labelText: s.password,
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: IconButton(
                         icon: Icon(_obscure
@@ -93,8 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () => setState(() => _obscure = !_obscure),
                       ),
                     ),
-                    validator: (v) =>
-                        v == null || v.length < 6 ? 'كلمة المرور 6 أحرف على الأقل' : null,
+                    validator: (v) => v == null || v.length < 6
+                        ? (s.isArabic ? 'كلمة المرور 6 أحرف على الأقل' : 'Password must be at least 6 characters')
+                        : null,
                   ),
                   const SizedBox(height: 24),
                   FilledButton(
@@ -105,12 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20, width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2,
                                 color: Colors.white))
-                        : const Text('تسجيل الدخول'),
+                        : Text(s.login),
                   ),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () => context.push('/register'),
-                    child: const Text('ليس لديك حساب؟ سجّل الآن'),
+                    child: Text(s.noAccount),
                   ),
                 ],
               ),

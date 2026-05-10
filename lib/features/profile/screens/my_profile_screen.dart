@@ -171,6 +171,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             FilledButton.tonal(
               onPressed: () async {
                 await auth.logout();
+                // ignore: use_build_context_synchronously
                 if (mounted) context.go('/login');
               },
               style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),

@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:awallimna/main.dart';
 
 void main() {
   // اختبار عداد يبدأ من 0 ثم يزداد إلى 1 عند الضغط على زر +
