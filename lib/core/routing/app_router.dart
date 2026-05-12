@@ -11,6 +11,7 @@ import '../../features/profile/screens/my_profile_screen.dart';
 import '../../features/profile/screens/other_account_screen.dart';
 import '../../features/settings/screens/settings_screen.dart';
 import '../../features/settings/screens/delete_account_screen.dart';
+import '../../features/authentication/screens/forgot_password_screen.dart';
 
 class AppRouter {
   static GoRouter router(AuthProvider authProvider) {
@@ -20,7 +21,7 @@ class AppRouter {
       redirect: (BuildContext context, GoRouterState state) {
         final isLoggedIn = authProvider.isLoggedIn;
         final loc = state.matchedLocation;
-        final isAuthRoute = loc == '/login' || loc == '/register';
+        final isAuthRoute = loc == '/login' || loc == '/register' || loc == '/forgot-password';
         if (!isLoggedIn && !isAuthRoute) return '/login';
         if (isLoggedIn && isAuthRoute) return '/home';
         return null;
@@ -76,6 +77,10 @@ class AppRouter {
         GoRoute(
           path: '/delete-account',
           builder: (context, state) => const DeleteAccountScreen(),
+        ),
+        GoRoute(
+          path: '/forgot-password',
+          builder: (context, state) => const ForgotPasswordScreen(),
         ),
       ],
     );
