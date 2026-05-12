@@ -1,0 +1,14 @@
+Oda — Arabic Stories & Novels Platform
+
+Discover a world of stories and novels in Arabic and 15+ other languages.
+
+Key Features:
+• A vast library of stories and novels across various genres
+• Comfortable reading experience with font size control and dark mode support
+• Instant text translation while reading
+• Rating and comment system to engage with stories
+• Upload and publish your own stories
+• Follow favorite authors and track your reading list
+• Full RTL support for Arabic and other RTL languages
+
+Oda — Where every story begins a journey.
