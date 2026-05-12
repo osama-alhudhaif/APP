@@ -2,7 +2,10 @@ const String appName = 'أودا';
 const String appVersion = '1.0.0';
 
 class AppConstants {
-  static const String baseUrl = 'http://192.168.1.5:8000';
+  static const String baseUrl = String.fromEnvironment(
+    'BASE_URL',
+    defaultValue: 'http://192.168.1.5:8000',
+  );
   static const String apiVersion = '/api/v1';
   static String get fullBaseUrl => '$baseUrl$apiVersion';
 
