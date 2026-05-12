@@ -23,6 +23,7 @@ class _ReadStoryScreenState extends State<ReadStoryScreen> {
   bool _isLoadingStory = true;
   bool _isLoadingFile = false;
   String? _error;
+  double _fontSize = 17.0;
 
   @override
   void initState() {
@@ -205,7 +206,19 @@ class _ReadStoryScreenState extends State<ReadStoryScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_story?.title ?? 'القراءة')),
+      appBar: AppBar(
+        title: Text(_story?.title ?? 'القراءة'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.text_decrease),
+            onPressed: () => setState(() => _fontSize = (_fontSize - 2).clamp(12.0, 32.0)),
+          ),
+          IconButton(
+            icon: const Icon(Icons.text_increase),
+            onPressed: () => setState(() => _fontSize = (_fontSize + 2).clamp(12.0, 32.0)),
+          ),
+        ],
+      ),
       body: _isLoadingFile
           ? const Center(
               child: Column(
@@ -264,7 +277,7 @@ class _ReadStoryScreenState extends State<ReadStoryScreen> {
         style: Theme.of(context)
             .textTheme
             .bodyLarge
-            ?.copyWith(height: 1.9, fontSize: 17),
+            ?.copyWith(height: 1.9, fontSize: _fontSize),
         contextMenuBuilder: (ctx, editableTextState) {
           final selection = editableTextState.textEditingValue.selection;
           final selected = selection.textInside(
